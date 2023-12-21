@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block title %} Сторінка користувача {% endblock %}
+
+{% block page_style %} <link rel="stylesheet" href="{% static 'css/.css' %}" media="screen"> {% endblock %}
+
+{% block body_data %} class="u-body u-xl-mode" data-lang="ua" {% endblock %}
+
+{% block main %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<section>
+    <div>
+        <p>Ім'я користувача: {{user.user.username}}</p>
+        <p>Електрона пошта: {{user.user.email}}</p>
+        <a type="button" class="btn btn-warning" href="logout">Вихід</a>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div id="chat-box" style="overflow-y: scroll; height: 300px; max-height: 300px; border: solid #000 2px; border-radius: 10px;">
+                    {% for message in messages %}
+                    {% if message.sender == user.user.username or message.recipient == user.user.username %}
+                    <p><strong>{{ message.sender }} -> {{message.recipient}}:</strong> {{ message.content }}</p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <form id="message-form">
+                    <div class="form-group" style="display: flex; flex-direction: row;">
+                        <label for="recipient">Кому: </label>
+                        <select class="form-control" id="recipient">
+                            {% for user_l in user_list %}
+                            {% if not user.just_user %}
+                            {% if user_l.just_user %}
+                            <option>{{user_l.user.username}}</option>
+                            {% endif %}
+                            {% else %}
+                            {% if not user_l.just_user %}
+                            <option>{{user_l.user.username}}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" type="text" id="content" placeholder="Повідомлення" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Send</button>
+                    </div>
+                </form>
+                <script>
+                    $(document).ready(function() {
+                        $('#message-form').on('submit', function(e) {
+                            e.preventDefault();
+                            var sender = $('#sender').val();
+                            var content = $('#content').val();
+                            var recipient = $('#recipient').val();
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/send_message/',
+                                data: {
+                                    'sender': sender,
+                                    'recipient': recipient,
+                                    'content': content,
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                },
+                                success: function(data) {
+                                    $('#chat-box').append('<p><strong>' + data.sender + '->' + data.recipient + ':</strong> ' + data.content + '</p>');
+                                    $('#content').val('');
+                                },
+                                error: function(xhr, errmsg, err) {
+                                    console.log(xhr.status + ': ' + xhr.responseText);
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

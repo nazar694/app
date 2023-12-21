@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block title %} Вхід {% endblock %}
+
+{% block page_style %} <link rel="stylesheet" href="{% static 'css/.css' %}" media="screen"> {% endblock %}
+
+{% block body_data %} class="u-body u-xl-mode" data-lang="ua" {% endblock %}
+
+{% block main %}
+<section>
+    <div class="container" style="max-width: 500px;">
+        <form method="POST">
+            <h2 class="text-center">Авторизація</h2>
+            <div class="form-group">
+                <label for="username">Ім'я користувача</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="password">
+            </div>
+            <button type="submit" class="btn btn-warning">Увійти</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

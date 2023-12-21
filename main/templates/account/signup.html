@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block title %} Реєстрація {% endblock %}
+
+{% block page_style %} <link rel="stylesheet" href="{% static 'css/.css' %}" media="screen"> {% endblock %}
+
+{% block body_data %} class="u-body u-xl-mode" data-lang="ua" {% endblock %}
+
+{% block main %}
+<section>
+    <div class="container" style="max-width: 500px;">
+        <form method="POST">
+            <h2 class="text-center">Реєстрація</h2>
+            <div class="form-group">
+                <label for="first_name">Ім'я</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="first name">
+            </div>
+            <div class="form-group">
+                <label for="last_name">Прізвище</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="last name">
+            </div>
+            <div class="form-group">
+                <label for="username">Ім'я користувача</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="username">
+            </div>
+            <div class="form-group">
+                <label for="username">Електрона пошта</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="password">
+            </div>
+            <button type="submit" class="btn btn-warning">Зареєструватись</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
